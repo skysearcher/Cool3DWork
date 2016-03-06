@@ -7,9 +7,7 @@ public class CameraPosition {
     private double x;
     private double y;
     private double z;
-
-
-
+    private double angle;
 
     public CameraPosition(){
 
@@ -19,6 +17,16 @@ public class CameraPosition {
         this.x = x;
         this.y = y;
         this.z = z;
+        angle = 0;
+    }
+
+
+    public double getAngle() {
+        return angle;
+    }
+
+    public void setAngle(double angle) {
+        this.angle = angle;
     }
     public double getZ() {
         return z;

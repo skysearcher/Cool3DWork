@@ -11,8 +11,10 @@ package CodeFiles;
 //Of course, your milage may vary. Don't feel restricted by this list of imports.
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import java.util.Iterator;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
@@ -21,7 +23,52 @@ import static org.lwjgl.util.glu.GLU.gluPerspective;
  * @author Brennan Smith
  */
 public class StudentLWJGLController implements CS355LWJGLController {
-    CameraPosition myState = new CameraPosition();
+    private CameraPosition myCamera;
+    private double moveFactor;
+    private double rotateFactor;
+    private double xAdd;
+    private double zAdd;
+    private int width;
+    private int height;
+    private TownModel myTown;
+    private int boxSize;
+    private int spacing;
+    public StudentLWJGLController(){
+        width = 1280;
+        height = 720;
+        myCamera = new CameraPosition();
+        moveFactor = 5;
+        rotateFactor = 2;
+        boxSize = 100;
+        spacing = 30;
+        myTown = new TownModel();
+        generateTown();
+    }
+    public void generateTown(){
+        WireFrame addModel = new HouseModel();
+//        addModel.setCenter(new Point3D(15, 0, -10));
+//        addModel.setColor(new ModelColor(1.0f, 0.5f, 0.5f));
+//        myTown.addModel(addModel);
+//        addModel = new HouseModel();
+//        addModel.setCenter(new Point3D(30, 0, -10));
+//        addModel.setColor(new ModelColor(0.5f, 0.5f, 0.5f));
+//        myTown.addModel(addModel);
+//        addModel = new HouseModel();
+//        addModel.setCenter(new Point3D(0, 0, -10));
+//        addModel.setColor(new ModelColor(0.5f, 0.5f, 1.0f));
+//        myTown.addModel(addModel);
+        for(int i = 0; i < boxSize; i++){
+            for(int j = 0; j < 1; j++){
+                for(int k = 0; k < boxSize; k++){
+                    addModel = new HouseModel();
+                    addModel.setCenter(new Point3D(spacing * i, spacing * j, -spacing* k));
+                    addModel.setColor(new ModelColor(0.5f, 0.5f, 1.0f));
+                    myTown.addModel(addModel);
+                }
+            }
+        }
+    }
+
 
     //This is a model of a house.
     //It has a single method that returns an iterator full of Line3Ds.
@@ -34,13 +81,14 @@ public class StudentLWJGLController implements CS355LWJGLController {
     //When you first start, have it be in perspective mode.
     @Override
     public void resizeGL() {
-        glViewport(0, 0, 640, 480);
+        glViewport(0, 0, width, height);
         glMatrixMode (GL_PROJECTION);
         glLoadIdentity ();
-        gluPerspective(120f, 640f/480f, 1.5f, 25f);
+        gluPerspective(90f, ((float)width)/((float)height), 0.5f, 10000f);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        glTranslated(0.0, -2, -20);
+        myCamera.setY(-2);
+        glTranslated(myCamera.getX(), myCamera.getY(), myCamera.getZ());
     }
 
     @Override
@@ -55,120 +103,131 @@ public class StudentLWJGLController implements CS355LWJGLController {
     @Override
     public void updateKeyboard() {
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            System.out.println("You are pressing W!");
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            System.out.println("You are pressing A!");
             glLoadIdentity();
-            glTranslated(0.0, -2, -20);
+            xAdd = (moveFactor)*Math.sin(Math.toRadians(myCamera.getAngle()));
+            zAdd = (moveFactor)*Math.cos(Math.toRadians(myCamera.getAngle()));
+            myCamera.setX(myCamera.getX() - xAdd);
+            myCamera.setZ(myCamera.getZ() + zAdd);
+            glRotated(myCamera.getAngle(), 0, 1, 0);
+            glTranslated(myCamera.getX(), myCamera.getY(), myCamera.getZ());
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            System.out.println("You are pressing S!");
+            glLoadIdentity();
+            xAdd = (moveFactor)*Math.sin(Math.toRadians(myCamera.getAngle()));
+            zAdd = (moveFactor)*Math.cos(Math.toRadians(myCamera.getAngle()));
+            myCamera.setX(myCamera.getX() + xAdd);
+            myCamera.setZ(myCamera.getZ() - zAdd);
+            glRotated(myCamera.getAngle(), 0, 1, 0);
+            glTranslated(myCamera.getX(), myCamera.getY(), myCamera.getZ());
         }
+        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+            glLoadIdentity();
+            xAdd = (moveFactor)*Math.cos(Math.toRadians(myCamera.getAngle()));
+            zAdd = (moveFactor)*Math.sin(Math.toRadians(myCamera.getAngle()));
+            myCamera.setX(myCamera.getX() + xAdd);
+            myCamera.setZ(myCamera.getZ() + zAdd);
+            glRotated(myCamera.getAngle(), 0, 1, 0);
+            glTranslated(myCamera.getX(), myCamera.getY(), myCamera.getZ());
+        }
+
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-            System.out.println("You are pressing D!");
+            glLoadIdentity();
+            xAdd = (moveFactor)*Math.cos(Math.toRadians(myCamera.getAngle()));
+            zAdd = (moveFactor)*Math.sin(Math.toRadians(myCamera.getAngle()));
+            myCamera.setX(myCamera.getX() - xAdd);
+            myCamera.setZ(myCamera.getZ() - zAdd);
+            glRotated(myCamera.getAngle(), 0, 1, 0);
+            glTranslated(myCamera.getX(), myCamera.getY(), myCamera.getZ());
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            System.out.println("You are pressing Q!");
+            glLoadIdentity();
+            myCamera.setAngle(myCamera.getAngle() - rotateFactor);
+            glRotated(myCamera.getAngle(), 0, 1, 0);
+            glTranslated(myCamera.getX(), myCamera.getY(), myCamera.getZ());
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-            System.out.println("You are pressing E!");
+            glLoadIdentity();
+            myCamera.setAngle(myCamera.getAngle() + rotateFactor);
+            glRotated(myCamera.getAngle(), 0, 1, 0);
+            glTranslated(myCamera.getX(), myCamera.getY(), myCamera.getZ());
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
-            System.out.println("You are pressing R!");
+            glLoadIdentity();
+            myCamera.setY(myCamera.getY() - moveFactor);
+            glRotated(myCamera.getAngle(), 0, 1, 0);
+            glTranslated(myCamera.getX(), myCamera.getY(), myCamera.getZ());
+//            System.out.println("You are pressing R!");
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
-            System.out.println("You are pressing F!");
+            glLoadIdentity();
+            myCamera.setY(myCamera.getY() + moveFactor);
+            glRotated(myCamera.getAngle(), 0, 1, 0);
+            glTranslated(myCamera.getX(), myCamera.getY(), myCamera.getZ());
+//            System.out.println("You are pressing F!");
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_H)) {
-            System.out.println("You are pressing H!");
+            myCamera = new CameraPosition(0, -2, -6.5);
+            glLoadIdentity();
+            glRotated(myCamera.getAngle(), 0, 1, 0);
+            glTranslated(myCamera.getX(), myCamera.getY(), myCamera.getZ());
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-            System.out.println("You are pressing O!");
+            glMatrixMode (GL_PROJECTION);
+            glLoadIdentity ();
+            glOrtho(-10.0, 10.0, -10.0, 10.0, 1.0, 25.0);
+            glMatrixMode(GL_MODELVIEW);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
-            System.out.println("You are pressing P!");
+            glMatrixMode (GL_PROJECTION);
+            glLoadIdentity ();
+            gluPerspective(90f, ((float)width)/((float)height), 0.5f, 25f);
+            glMatrixMode(GL_MODELVIEW);
         }
-//        a
-//        Move left
-//        d
-//        Move right
-//        w
-//        Move forward
-//        s
-//        Move backward
-//        q
-//        Turn left
-//        e
-//        Turn right
-//        r
-//        Move up
-//        f
-//        Move down
-//        h
-//        Return to the original “home” position and orientation
-//                o
-//        Switch to orthographic projection
-//        p
-//        Switch to perspective projection
+
     }
 
     //This method is the one that actually draws to the screen.
     @Override
     public void render() {
-        boolean test = true;
+        boolean test = false;
         Line3D myLine = new Line3D(new Point3D(0, 0, 0), new Point3D(1, 1, 1));
         Point3D myStart = new Point3D(0, 0, 0);
         Point3D myEnd = new Point3D(0, 0, 0);
         //This clears the screen.
         glClear(GL_COLOR_BUFFER_BIT);
-        glColor3f(1.0f, 0.2f, 0.2f);
+        glBegin(GL_LINES);
 
         if (test) {
             Iterator<Line3D> myIter = model.getLines();
-            glBegin(GL_LINES);
+            glColor3f(1.0f, 0.2f, 0.2f);
             while (myIter.hasNext()) {
-
-//                glTranslated(20.0, 20.0, 20.0);
-//                glRotated(0.0, 20.0, 20.0, 20.0);
-
-//                glRotated(0.0, 0.0, 0.0, 0.0);
-//
-//                glScaled(1.0, 1.0, 1.0);
-
                 myLine = myIter.next();
                 myStart = myLine.start;
                 myEnd = myLine.end;
 
-                glVertex3d(myStart.x - 8, myStart.y , myStart.z);
-                glVertex3d(myEnd.x - 8, myEnd.y , myEnd.z);
-            }
-
-            Iterator<Line3D> myIter2 = model.getLines();
-            glLoadIdentity();
-            while (myIter2.hasNext()) {
-
-//                glTranslated(20.0, 20.0, 20.0);
-//                glRotated(0.0, 20.0, 20.0, 20.0);
-
-//                glRotated(0.0, 0.0, 0.0, 0.0);
-//
-//                glScaled(1.0, 1.0, 1.0);
-
-                myLine = myIter2.next();
-                myStart = myLine.start;
-                myEnd = myLine.end;
-
-                glVertex3d(myStart.x + 8, myStart.y , myStart.z);
-                glVertex3d(myEnd.x  + 8, myEnd.y , myEnd.z);
+                glVertex3d(myStart.x, myStart.y , myStart.z);
+                glVertex3d(myEnd.x, myEnd.y , myEnd.z);
             }
             glEnd();
         } else {
-            glScaled(1.0, 1.0, 1.0);
-            glRotated(0.0, 0.0, 0.0, 0.0);
-            glTranslated(0.0, 0.0, 0.0);
-            glMatrixMode(GL_MODELVIEW);
-            glMatrixMode(GL_PROJECTION);
+            List<WireFrame> myModels = myTown.getModels();
+            for(int i = 0; i < myModels.size(); i++){
+                WireFrame aModel = myModels.get(i);
+                glColor3f(aModel.getColor().getRed(), aModel.getColor().getBlue(), aModel.getColor().getBlue());
+
+                Iterator<Line3D> myIter = aModel.getLines();
+                Point3D myCenter = aModel.getCenter();
+
+                while (myIter.hasNext()) {
+                    myLine = myIter.next();
+                    myStart = myLine.start;
+                    myEnd = myLine.end;
+
+                    glVertex3d(myStart.x + myCenter.x, myStart.y + myCenter.y, myStart.z + myCenter.z);
+                    glVertex3d(myEnd.x + myCenter.x, myEnd.y + myCenter.y, myEnd.z + myCenter.z);
+                }
+            }
+            glEnd();
         }
 
 
