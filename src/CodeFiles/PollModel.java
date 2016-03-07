@@ -19,6 +19,27 @@ public class PollModel extends WireFrame{
         lines.add(new Line3D(new Point3D(3, 0, 1), new Point3D(3, 0, -1)));
         lines.add(new Line3D(new Point3D(3, 0, -1), new Point3D(1, 0, -3)));
         lines.add(new Line3D(new Point3D(1, 0, -3), new Point3D(-1, 0, -3)));
+
+        //top
+        //        ground
+        lines.add(new Line3D(new Point3D(-1, 10, -3), new Point3D(-3, 10, -1)));
+        lines.add(new Line3D(new Point3D(-3, 10, -1), new Point3D(-3, 10, 1)));
+        lines.add(new Line3D(new Point3D(-3, 10, 1), new Point3D(-1, 10, 3)));
+        lines.add(new Line3D(new Point3D(-1, 10, 3), new Point3D(1, 10, 3)));
+        lines.add(new Line3D(new Point3D(1, 10, 3), new Point3D(3, 10, 1)));
+        lines.add(new Line3D(new Point3D(3, 10, 1), new Point3D(3, 10, -1)));
+        lines.add(new Line3D(new Point3D(3, 10, -1), new Point3D(1, 10, -3)));
+        lines.add(new Line3D(new Point3D(1, 10, -3), new Point3D(-1, 10, -3)));
+
+        //        ground
+        lines.add(new Line3D(new Point3D(-1, 0, -3), new Point3D(-1, 10, -3)));
+        lines.add(new Line3D(new Point3D(-3, 0, -1), new Point3D(-3, 10, -1)));
+        lines.add(new Line3D(new Point3D(-3, 0, 1), new Point3D(-3, 10, 1)));
+        lines.add(new Line3D(new Point3D(-1, 0, 3), new Point3D(-1, 10, 3)));
+        lines.add(new Line3D(new Point3D(1, 0, 3), new Point3D(1, 10, 3)));
+        lines.add(new Line3D(new Point3D(3, 0, 1), new Point3D(3, 10, 1)));
+        lines.add(new Line3D(new Point3D(3, 0, -1), new Point3D(3, 10, -1)));
+        lines.add(new Line3D(new Point3D(1, 0, -3), new Point3D(1, 10, -3)));
     }
     @Override
     public Iterator<Line3D> getLines() {

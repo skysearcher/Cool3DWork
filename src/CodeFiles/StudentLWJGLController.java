@@ -33,30 +33,29 @@ public class StudentLWJGLController implements CS355LWJGLController {
     private TownModel myTown;
     private int boxSize;
     private int spacing;
+    private double jump;
+    private double timeOff;
+    private double gravity;
+    private boolean jumping;
+
     public StudentLWJGLController(){
         width = 1280;
         height = 720;
         myCamera = new CameraPosition();
-        moveFactor = 5;
+        moveFactor = 0.5;
         rotateFactor = 2;
         boxSize = 20;
         spacing = 30;
         myTown = new TownModel();
+        jump = 0;
+        timeOff = 0.1;
+        gravity = 0.5;
+        jumping = false;
+//        generateCubeTown();
         generateTown();
     }
-    public void generateTown(){
+    public void generateCubeTown(){
         WireFrame addModel = new HouseModel();
-//        addModel.setCenter(new Point3D(15, 0, -10));
-//        addModel.setColor(new ModelColor(1.0f, 0.5f, 0.5f));
-//        myTown.addModel(addModel);
-//        addModel = new HouseModel();
-//        addModel.setCenter(new Point3D(30, 0, -10));
-//        addModel.setColor(new ModelColor(0.5f, 0.5f, 0.5f));
-//        myTown.addModel(addModel);
-//        addModel = new HouseModel();
-//        addModel.setCenter(new Point3D(0, 0, -10));
-//        addModel.setColor(new ModelColor(0.5f, 0.5f, 1.0f));
-//        myTown.addModel(addModel);
         for(int i = 0; i < boxSize; i++){
             for(int j = 0; j < boxSize; j++){
                 for(int k = 0; k < boxSize; k++){
@@ -67,6 +66,32 @@ public class StudentLWJGLController implements CS355LWJGLController {
                 }
             }
         }
+    }
+
+
+    public void generateTown(){
+        WireFrame addModel = new HouseModel();
+        addModel.setCenter(new Point3D(0, 0, 0));
+        addModel.setColor(new ModelColor(1.0f, 0.5f, 0.5f));
+        myTown.addModel(addModel);
+        addModel = new PollModel();
+        addModel.setCenter(new Point3D(15, 0, 0));
+        addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
+        myTown.addModel(addModel);
+        addModel = new StraightRoadModel();
+        addModel.setCenter(new Point3D(0, 0, 15));
+        addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
+        myTown.addModel(addModel);
+
+//        addModel = new HouseModel();
+//        addModel.setCenter(new Point3D(30, 0, -10));
+//        addModel.setColor(new ModelColor(0.5f, 0.5f, 0.5f));
+//        myTown.addModel(addModel);
+//        addModel = new HouseModel();
+//        addModel.setCenter(new Point3D(0, 0, -10));
+//        addModel.setColor(new ModelColor(0.5f, 0.5f, 1.0f));
+//        myTown.addModel(addModel);
+
     }
 
 
@@ -183,6 +208,12 @@ public class StudentLWJGLController implements CS355LWJGLController {
             gluPerspective(90f, ((float)width)/((float)height), 0.5f, 25f);
             glMatrixMode(GL_MODELVIEW);
         }
+        if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+            if(!jumping){
+                jump = -2.5;
+                jumping = true;
+            }
+        }
 
     }
 
@@ -193,7 +224,28 @@ public class StudentLWJGLController implements CS355LWJGLController {
         Line3D myLine = new Line3D(new Point3D(0, 0, 0), new Point3D(1, 1, 1));
         Point3D myStart = new Point3D(0, 0, 0);
         Point3D myEnd = new Point3D(0, 0, 0);
+        double dist;
+        double offSet;
+
         //This clears the screen.
+        if(myCamera.getY() <= -2 && jumping){
+            dist = jump*timeOff + 0.5*gravity*Math.pow(timeOff, 2.0);
+            jump += gravity*timeOff;
+            offSet = myCamera.getY() + dist;
+            if(offSet > -2){
+                jumping = false;
+                glLoadIdentity();
+                glRotated(myCamera.getAngle(), 0, 1, 0);
+                myCamera.setY(-2);
+                glTranslated(myCamera.getX(), -2, myCamera.getZ());
+            }else{
+                myCamera.setY(offSet);
+                glTranslated(0, dist, 0);
+            }
+
+        }
+
+
         glClear(GL_COLOR_BUFFER_BIT);
         glBegin(GL_LINES);
 
@@ -223,12 +275,14 @@ public class StudentLWJGLController implements CS355LWJGLController {
                     myStart = myLine.start;
                     myEnd = myLine.end;
 
+
                     glVertex3d(myStart.x + myCenter.x, myStart.y + myCenter.y, myStart.z + myCenter.z);
                     glVertex3d(myEnd.x + myCenter.x, myEnd.y + myCenter.y, myEnd.z + myCenter.z);
                 }
             }
             glEnd();
         }
+
 
 
         //Do your drawing here.
