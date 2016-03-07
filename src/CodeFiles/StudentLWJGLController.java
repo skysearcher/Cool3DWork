@@ -39,7 +39,7 @@ public class StudentLWJGLController implements CS355LWJGLController {
         myCamera = new CameraPosition();
         moveFactor = 5;
         rotateFactor = 2;
-        boxSize = 100;
+        boxSize = 20;
         spacing = 30;
         myTown = new TownModel();
         generateTown();
@@ -58,7 +58,7 @@ public class StudentLWJGLController implements CS355LWJGLController {
 //        addModel.setColor(new ModelColor(0.5f, 0.5f, 1.0f));
 //        myTown.addModel(addModel);
         for(int i = 0; i < boxSize; i++){
-            for(int j = 0; j < 1; j++){
+            for(int j = 0; j < boxSize; j++){
                 for(int k = 0; k < boxSize; k++){
                     addModel = new HouseModel();
                     addModel.setCenter(new Point3D(spacing * i, spacing * j, -spacing* k));
