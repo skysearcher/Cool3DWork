@@ -71,13 +71,8 @@ public class StudentLWJGLController implements CS355LWJGLController {
 
     public void generateTown(){
         WireFrame addModel = new HouseModel();
-        addModel = new HouseModel();
-        addModel.setCenter(new Point3D(-15, 0, 0));
-        addModel.setColor(new ModelColor(1.0f, 0.5f, 0.5f));
-        addModel.setRotation(90);
-        myTown.addModel(addModel);
         addModel = new PollModel();
-        addModel.setCenter(new Point3D(15, 0, 0));
+        addModel.setCenter(new Point3D(15, 0, 5));
         addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
         myTown.addModel(addModel);
 
@@ -257,13 +252,13 @@ public class StudentLWJGLController implements CS355LWJGLController {
         if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
             glMatrixMode (GL_PROJECTION);
             glLoadIdentity ();
-            glOrtho(-10.0, 10.0, -10.0, 10.0, 1.0, 25.0);
+            glOrtho(-10.0, 10.0, -10.0, 10.0, 1.0, 200.0);
             glMatrixMode(GL_MODELVIEW);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
             glMatrixMode (GL_PROJECTION);
             glLoadIdentity ();
-            gluPerspective(90f, ((float)width)/((float)height), 0.5f, 25f);
+            gluPerspective(90f, ((float)width)/((float)height), 0.5f, 10000f);
             glMatrixMode(GL_MODELVIEW);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
@@ -310,12 +305,13 @@ public class StudentLWJGLController implements CS355LWJGLController {
 
 
         glClear(GL_COLOR_BUFFER_BIT);
-        glBegin(GL_QUADS);
+        glBegin(GL_POLYGON);
         glColor3f(0.2f, 1.0f, 0.5f);
-        glVertex3d(0, 0 , 0);
-        glVertex3d(15, 0 , 0);
-        glVertex3d(0, 0 , 15);
-        glVertex3d(15, 0 , 15);
+        glVertex3d(0, 0, 25);
+        glVertex3d(0, 0 , 165);
+        glVertex3d(-180, 0 , 165);
+        glVertex3d(-180, 0 , 25);
+        glVertex3d(-5, 0, 25);
         glEnd();
 
 
