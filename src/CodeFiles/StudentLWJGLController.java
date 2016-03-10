@@ -42,7 +42,7 @@ public class StudentLWJGLController implements CS355LWJGLController {
         width = 1280;
         height = 720;
         myCamera = new CameraPosition();
-        moveFactor = 0.5;
+        moveFactor = 0.1;
         rotateFactor = 2;
         boxSize = 20;
         spacing = 30;
@@ -80,6 +80,18 @@ public class StudentLWJGLController implements CS355LWJGLController {
         myTown.addModel(addModel);
         addModel = new StraightRoadModel();
         addModel.setCenter(new Point3D(0, 0, 15));
+        addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
+        myTown.addModel(addModel);
+        addModel = new StraightRoadModel();
+        addModel.setCenter(new Point3D(0, 0, 25));
+        addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
+        myTown.addModel(addModel);
+        addModel = new StraightRoadModel();
+        addModel.setCenter(new Point3D(0, 0, 35));
+        addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
+        myTown.addModel(addModel);
+        addModel = new StraightRoadModel();
+        addModel.setCenter(new Point3D(0, 0, 45));
         addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
         myTown.addModel(addModel);
 
