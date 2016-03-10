@@ -42,7 +42,7 @@ public class StudentLWJGLController implements CS355LWJGLController {
         width = 1280;
         height = 720;
         myCamera = new CameraPosition();
-        moveFactor = 0.1;
+        moveFactor = 1;
         rotateFactor = 2;
         boxSize = 20;
         spacing = 30;
@@ -71,39 +71,85 @@ public class StudentLWJGLController implements CS355LWJGLController {
 
     public void generateTown(){
         WireFrame addModel = new HouseModel();
-        addModel.setCenter(new Point3D(0, 0, 0));
+        addModel = new HouseModel();
+        addModel.setCenter(new Point3D(-15, 0, 0));
         addModel.setColor(new ModelColor(1.0f, 0.5f, 0.5f));
+        addModel.setRotation(90);
         myTown.addModel(addModel);
         addModel = new PollModel();
         addModel.setCenter(new Point3D(15, 0, 0));
         addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
         myTown.addModel(addModel);
-        addModel = new StraightRoadModel();
-        addModel.setCenter(new Point3D(0, 0, 15));
-        addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
-        myTown.addModel(addModel);
-        addModel = new StraightRoadModel();
-        addModel.setCenter(new Point3D(0, 0, 25));
-        addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
-        myTown.addModel(addModel);
-        addModel = new StraightRoadModel();
-        addModel.setCenter(new Point3D(0, 0, 35));
-        addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
-        myTown.addModel(addModel);
-        addModel = new StraightRoadModel();
-        addModel.setCenter(new Point3D(0, 0, 45));
-        addModel.setColor(new ModelColor(0.0f, 1.0f, 0.5f));
-        myTown.addModel(addModel);
 
-//        addModel = new HouseModel();
-//        addModel.setCenter(new Point3D(30, 0, -10));
-//        addModel.setColor(new ModelColor(0.5f, 0.5f, 0.5f));
-//        myTown.addModel(addModel);
-//        addModel = new HouseModel();
-//        addModel.setCenter(new Point3D(0, 0, -10));
-//        addModel.setColor(new ModelColor(0.5f, 0.5f, 1.0f));
-//        myTown.addModel(addModel);
+        //Cities
+        for(int i = 0; i < 13; i++){
+            addModel = new HouseModel();
+            addModel.setCenter(new Point3D((-15 * (i)), 0, 0));
+            addModel.setColor(new ModelColor(1.0f, 0.5f, 0.5f));
+            myTown.addModel(addModel);
+            addModel = new HouseModel();
+            addModel.setCenter(new Point3D((-15 * (i)), 0, 190));
+            addModel.setColor(new ModelColor(1.0f, 0.5f, 0.5f));
+            addModel.setRotation(180);
+            myTown.addModel(addModel);
+        }
+        for(int i = 0; i < 10; i++){
+            addModel = new HouseModel();
+            addModel.setCenter(new Point3D(25, 0, 25 + (15 * i)));
+            addModel.setColor(new ModelColor(1.0f, 0.5f, 0.5f));
+            addModel.setRotation(90);
+            myTown.addModel(addModel);
+            addModel = new HouseModel();
+            addModel.setCenter(new Point3D(-205, 0, 25 + (15 * i)));
+            addModel.setColor(new ModelColor(1.0f, 0.5f, 0.5f));
+            addModel.setRotation(270);
+            myTown.addModel(addModel);
+        }
 
+
+
+        //roads
+        addModel = new EdgeRoadModel();
+        addModel.setCenter(new Point3D(10, 0, 15));
+        addModel.setColor(new ModelColor(1.0f, 1.0f, 1.0f));
+        myTown.addModel(addModel);
+        addModel = new EdgeRoadModel();
+        addModel.setCenter(new Point3D(10, 0, 175));
+        addModel.setColor(new ModelColor(1.0f, 1.0f, 1.0f));
+        addModel.setRotation(90);
+        myTown.addModel(addModel);
+        addModel = new EdgeRoadModel();
+        addModel.setCenter(new Point3D(-190, 0, 15));
+        addModel.setColor(new ModelColor(1.0f, 1.0f, 1.0f));
+        addModel.setRotation(270);
+        myTown.addModel(addModel);
+        addModel = new EdgeRoadModel();
+        addModel.setCenter(new Point3D(-190, 0, 175));
+        addModel.setColor(new ModelColor(1.0f, 1.0f, 1.0f));
+        addModel.setRotation(180);
+        myTown.addModel(addModel);
+        for(int i = 0; i < 19; i++){
+            addModel = new StraightRoadModel();
+            addModel.setCenter(new Point3D(-10*i, 0, 15));
+            addModel.setColor(new ModelColor(1.0f, 1.0f, 1.0f));
+            addModel.setRotation(90);
+            myTown.addModel(addModel);
+            addModel = new StraightRoadModel();
+            addModel.setCenter(new Point3D(-10*i, 0, 175));
+            addModel.setColor(new ModelColor(1.0f, 1.0f, 1.0f));
+            addModel.setRotation(90);
+            myTown.addModel(addModel);
+        }
+        for(int i = 0; i < 15; i++){
+            addModel = new StraightRoadModel();
+            addModel.setCenter(new Point3D(10, 0, 15 + (10 * (i + 1))));
+            addModel.setColor(new ModelColor(1.0f, 1.0f, 1.0f));
+            myTown.addModel(addModel);
+            addModel = new StraightRoadModel();
+            addModel.setCenter(new Point3D(-190, 0, 15 + (10 * (i + 1))));
+            addModel.setColor(new ModelColor(1.0f, 1.0f, 1.0f));
+            myTown.addModel(addModel);
+        }
     }
 
 
@@ -232,12 +278,17 @@ public class StudentLWJGLController implements CS355LWJGLController {
     //This method is the one that actually draws to the screen.
     @Override
     public void render() {
-        boolean test = false;
+        int test = 2;
         Line3D myLine = new Line3D(new Point3D(0, 0, 0), new Point3D(1, 1, 1));
         Point3D myStart = new Point3D(0, 0, 0);
         Point3D myEnd = new Point3D(0, 0, 0);
+        double rotation;
         double dist;
         double offSet;
+        double xRotOne;
+        double zRotOne;
+        double xRotTwo;
+        double zRotTwo;
 
         //This clears the screen.
         if(myCamera.getY() <= -2 && jumping){
@@ -259,9 +310,18 @@ public class StudentLWJGLController implements CS355LWJGLController {
 
 
         glClear(GL_COLOR_BUFFER_BIT);
+        glBegin(GL_QUADS);
+        glColor3f(0.2f, 1.0f, 0.5f);
+        glVertex3d(0, 0 , 0);
+        glVertex3d(15, 0 , 0);
+        glVertex3d(0, 0 , 15);
+        glVertex3d(15, 0 , 15);
+        glEnd();
+
+
         glBegin(GL_LINES);
 
-        if (test) {
+        if (test == 0) {
             Iterator<Line3D> myIter = model.getLines();
             glColor3f(1.0f, 0.2f, 0.2f);
             while (myIter.hasNext()) {
@@ -273,7 +333,7 @@ public class StudentLWJGLController implements CS355LWJGLController {
                 glVertex3d(myEnd.x, myEnd.y , myEnd.z);
             }
             glEnd();
-        } else {
+        } else if(test == 1){
             List<WireFrame> myModels = myTown.getModels();
             for(int i = 0; i < myModels.size(); i++){
                 WireFrame aModel = myModels.get(i);
@@ -287,13 +347,36 @@ public class StudentLWJGLController implements CS355LWJGLController {
                     myStart = myLine.start;
                     myEnd = myLine.end;
 
-
                     glVertex3d(myStart.x + myCenter.x, myStart.y + myCenter.y, myStart.z + myCenter.z);
                     glVertex3d(myEnd.x + myCenter.x, myEnd.y + myCenter.y, myEnd.z + myCenter.z);
                 }
             }
             glEnd();
+        }else if(test == 2){
+            List<WireFrame> myModels = myTown.getModels();
+            for(int i = 0; i < myModels.size(); i++){
+                WireFrame aModel = myModels.get(i);
+                glColor3f(aModel.getColor().getRed(), aModel.getColor().getBlue(), aModel.getColor().getBlue());
+
+                Iterator<Line3D> myIter = aModel.getLines();
+                Point3D myCenter = aModel.getCenter();
+                rotation = Math.toRadians(aModel.getRotation());
+                while (myIter.hasNext()) {
+                    myLine = myIter.next();
+                    myStart = myLine.start;
+                    myEnd = myLine.end;
+                    xRotOne = (Math.cos(rotation) * myStart.x) - (Math.sin(rotation) * myStart.z);
+                    zRotOne = (Math.sin(rotation) * myStart.x) + (Math.cos(rotation) * myStart.z);
+                    xRotTwo = (Math.cos(rotation) * myEnd.x) - (Math.sin(rotation) * myEnd.z);
+                    zRotTwo = (Math.sin(rotation) * myEnd.x) + (Math.cos(rotation) * myEnd.z);
+
+                    glVertex3d(xRotOne + myCenter.x, myStart.y + myCenter.y, zRotOne + myCenter.z);
+                    glVertex3d(xRotTwo + myCenter.x, myEnd.y + myCenter.y, zRotTwo + myCenter.z);
+                }
+            }
+            glEnd();
         }
+
 
 
 
